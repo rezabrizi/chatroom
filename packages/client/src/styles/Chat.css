@@ -1,0 +1,72 @@
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 90vh; 
+    max-width: 600px; 
+    margin: auto;
+}
+
+.messages {
+    flex: 1;
+    padding: 10px; 
+    overflow-y: scroll;
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    margin-bottom: 10px; 
+}
+
+
+.message {
+    padding: 10px; 
+    margin-bottom: 5px; 
+    border-radius: 5px; 
+    background-color: #f0f0f0; /* Light grey background */
+    color: #333; /* Darker text color for contrast */
+    border: 1px solid #ccc; /* Optional: Add a border for better separation */
+}
+
+.self-message {
+    padding: 10px; 
+    margin-bottom: 5px; 
+    border-radius: 5px; 
+    background-color: #a8d5e2; /* Light grey background */
+    color: #333; /* Darker text color for contrast */
+    border: 1px solid #ccc; /* Optional: Add a border for better separation */
+}
+
+
+.message-form {
+    display: flex
+}
+
+.message-input {
+    flex: 1;
+    padding: 10px; 
+    margin-bottom: 5px; 
+    border: 1px solid #ccc; 
+    border-radius: 10px 0 0 10px; 
+}
+
+.send-button {
+    padding: 10px; 
+    border: none; 
+    background-color: #28a745; 
+    color: white;
+    margin-bottom: 5px; 
+    border-radius: 0 10px 10px 0; 
+    cursor: pointer;
+}
+
+.sign-out-form {
+    display: flex
+}
+
+.sign-out-button {
+    padding: 10px;
+    background-color: red;
+    margin-bottom: 5px; 
+    color: white; 
+    border-radius: 10px 10px 10px 10px; 
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
