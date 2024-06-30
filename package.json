@@ -1,0 +1,21 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start:server": "cd packages/server && npm start",
+    "start:client": "cd packages/client && npm start",
+    "dev:server": "cd packages/server && npm run dev",
+    "dev:client": "cd packages/client && npm start",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/node": "^20.14.9",
+    "concurrently": "^8.2.2",
+    "typescript": "^5.5.2"
+  }
+}
