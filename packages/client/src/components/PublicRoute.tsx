@@ -2,15 +2,15 @@ import { PropsWithChildren, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 
-type ProtectedRouteProps = PropsWithChildren;
+type PublicRouteProps = PropsWithChildren;
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function PublicRoute({ children }: PublicRouteProps) {
   const { token, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && token === null) {
-      navigate("/login", { replace: true });
+    if (!loading && token !== null) {
+      navigate("/protected_example", { replace: true }); // Redirect to protected route
     }
   }, [navigate, token, loading]);
 

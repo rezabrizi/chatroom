@@ -1,26 +1,43 @@
 import React from "react";
-import { Routes, BrowserRouter as Router, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import LoggedIn from "./components/ChatroomRoute";
-import Chat from "./components/Chatroom";
-import Anonymous from "./components/ProtectedRoute";
+import AuthProvider from "./context/authContext";
+import Protected_Example from "./components/protected_example";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute"; // Import the PublicRoute component
+
+const router = createBrowserRouter([
+  {
+    path: "/protected_example",
+    element: (
+      <ProtectedRoute>
+        <Protected_Example />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
+  },
+]);
 
 const App: React.FC = () => {
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route element={<Anonymous />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Route>
-          <Route element={<LoggedIn />}>
-            <Route path="/chatroom" element={<Chat />} />
-          </Route>
-        </Routes>
-      </Router>
-    </>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   );
 };
 
