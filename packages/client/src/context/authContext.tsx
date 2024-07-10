@@ -11,11 +11,16 @@ import axios, { AxiosRequestConfig } from "axios";
 
 axios.defaults.withCredentials = true;
 
+interface loginResponse {
+  status: "success" | "error";
+}
+
 interface AuthContextType {
   token: string | null;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<loginResponse>;
   logout: () => void;
   loading: boolean;
+  name: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,19 +44,25 @@ interface ExtendedAxiosRequestConfig extends AxiosRequestConfig {
 
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const login = async (username: string, password: string) => {
+  const login = async (
+    user_email: string,
+    password: string
+  ): Promise<loginResponse> => {
     try {
       const response = await axios.post("http://localhost:1337/api/login", {
-        username,
+        email: user_email,
         password,
       });
-      console.log(response.data.accessToken);
       setToken(response.data.accessToken);
+      localStorage.setItem("email", user_email);
+      return { status: "success" };
     } catch (error) {
       setToken(null);
-      throw new Error("Login failed");
+      localStorage.removeItem("email");
+      return { status: "error" };
     }
   };
 
@@ -67,8 +78,30 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     setLoading(false);
   };
 
+  const get_profile = async (): Promise<void> => {
+    try {
+      const email = localStorage.getItem("email");
+      const response = await axios.get("http://localhost:1337/api/profile", {
+        params: { email },
+      });
+      console.log(response);
+      setName(response.data.name);
+    } catch (err) {
+      console.log(err);
+      setName(null);
+    }
+  };
+
+  useEffect(() => {
+    if (name === null && token !== null) {
+      console.log("Refreshing name");
+      get_profile();
+    }
+  }, [token]);
+
   useEffect(() => {
     if (token === null) {
+      console.log("refreshing token");
       refreshAccessToken();
     } else {
       setLoading(false);
@@ -77,13 +110,15 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await axios.get("http://localhost:1337/api/logout");
+      const response = await axios.post("http://localhost:1337/api/logout");
       if (response.data.status !== "ok") console.log("Logout failed");
+      localStorage.removeItem("email");
     } catch (error) {
       throw new Error("Logout failed");
     }
 
     setToken(null);
+    setName(null);
   };
 
   useLayoutEffect(() => {
@@ -138,7 +173,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ token, login, logout, loading }}>
+    <AuthContext.Provider value={{ token, login, logout, loading, name }}>
       {children}
     </AuthContext.Provider>
   );

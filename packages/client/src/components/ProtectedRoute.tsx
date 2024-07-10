@@ -15,7 +15,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }, [navigate, token, loading]);
 
   if (loading) {
-    return <div>Loading...</div>; // Display a loading indicator while checking the token
+    return <div>Loading...</div>;
   }
 
   return <>{children}</>;

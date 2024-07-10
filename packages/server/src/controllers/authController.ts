@@ -6,11 +6,7 @@ import {
   verifyToken,
   BLOCKED_TOKENS,
 } from "../utils/jwtUtils";
-// import Session from '../models/session.models'; // Uncomment if using session-based storage
 import bcrypt from "bcrypt";
-
-const JWT_SECRET = process.env.JWT_SECRET || "SECRET";
-const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || "SECRET_";
 
 const blockToken = (token: string, expiresIn: number) => {
   const expirationTime = Date.now() + expiresIn * 1000;
@@ -65,10 +61,10 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
-    const { username, password } = req.body;
-    const user = await User.findOne({ email: username });
-    console.log(user);
+    const { email, password } = req.body;
+    const user = await User.findOne({
+      email: { $regex: new RegExp(`^${email}$`, "i") },
+    });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // await Session.deleteMany({ userId: user._id });
@@ -115,7 +111,6 @@ export const logout = async (req: Request, res: Response) => {
 
 export const refreshToken = async (req: Request, res: Response) => {
   try {
-    console.log(req.cookies);
     const { refreshToken } = req.cookies;
 
     if (!refreshToken) {

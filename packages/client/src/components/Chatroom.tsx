@@ -40,30 +40,9 @@ const Chat: React.FC = () => {
     }
   };
 
-  const signOut = async (e: React.FormEvent) => {
-    console.log("Trying to log out ");
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:1337/api/logout", {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Error logging out ", errorData.message);
-    } else {
-      console.log("Logout Successful!");
-      localStorage.removeItem("token");
-      navigate("/login");
-    }
-  };
-
   return (
-    <div className="chat-container">
-      <div className="messages">
+    <div className='chat-container'>
+      <div className='messages'>
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -73,21 +52,16 @@ const Chat: React.FC = () => {
           </div>
         ))}
       </div>
-      <form onSubmit={sendMessage} className="message-form">
+      <form onSubmit={sendMessage} className='message-form'>
         <input
-          type="text"
+          type='text'
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="message-input"
-          placeholder="Type a message..."
+          className='message-input'
+          placeholder='Type a message...'
         />
-        <button type="submit" className="send-button">
+        <button type='submit' className='send-button'>
           Send
-        </button>
-      </form>
-      <form onSubmit={signOut} className="sign-out-form">
-        <button type="submit" className="sign-out-button">
-          Sign Out
         </button>
       </form>
     </div>

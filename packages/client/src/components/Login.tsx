@@ -12,12 +12,14 @@ const Login: React.FC = () => {
 
   async function loginUser(event: FormEvent) {
     event.preventDefault();
-    try {
-      await login(email, password);
+
+    const { status } = await login(email, password);
+    if (status === "success") {
       navigate("/protected_example");
-    } catch (err) {
-      console.error("Login Failed");
     }
+    alert(`Login ${status}`);
+    setEmail("");
+    setPassword("");
   }
 
   return (
