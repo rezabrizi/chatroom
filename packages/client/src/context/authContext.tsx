@@ -71,6 +71,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       const response = await axios.post(
         "http://localhost:1337/api/refreshToken"
       );
+
       setToken(response.data.accessToken);
     } catch {
       setToken(null);
@@ -84,7 +85,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       const response = await axios.get("http://localhost:1337/api/profile", {
         params: { email },
       });
-      console.log(response);
+
       setName(response.data.name);
     } catch (err) {
       console.log(err);

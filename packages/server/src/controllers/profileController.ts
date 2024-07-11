@@ -22,7 +22,7 @@ async function profile(req: Request, res: Response) {
       });
     }
 
-    res.status(201).json({ status: "ok", name: existingUser.username });
+    res.status(201).json({ status: "ok", name: existingUser.name });
   } catch (err) {
     return res.status(500).json({
       status: "error",

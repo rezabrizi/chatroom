@@ -27,6 +27,7 @@ setInterval(removeExpiredRefreshTokens, 86400000);
 export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
+    console.log(name);
     if (!name || !email || !password) {
       return res.status(400).json({
         status: "error",
@@ -44,7 +45,7 @@ export const register = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await User.create({
-      username: name,
+      name: name,
       email: email,
       password: hashedPassword,
     });
@@ -69,8 +70,8 @@ export const login = async (req: Request, res: Response) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       // await Session.deleteMany({ userId: user._id });
 
-      const accessToken = generateRandomToken({ type: "access" });
-      const refreshToken = generateRandomToken({ type: "refresh" });
+      const accessToken = generateRandomToken({ type: "access" }, user.name);
+      const refreshToken = generateRandomToken({ type: "refresh" }, user.name);
 
       // await Session.create({ userId: user._id, token: refreshToken });
 
@@ -112,7 +113,6 @@ export const logout = async (req: Request, res: Response) => {
 export const refreshToken = async (req: Request, res: Response) => {
   try {
     const { refreshToken } = req.cookies;
-
     if (!refreshToken) {
       return res
         .status(401)
@@ -132,7 +132,10 @@ export const refreshToken = async (req: Request, res: Response) => {
         .json({ status: "error", message: "Invalid refresh token" });
     }
 
-    const newAccessToken = generateRandomToken({ type: "access" });
+    const newAccessToken = generateRandomToken(
+      { type: "access" },
+      decoded.name as string
+    );
     res.status(200).json({ status: "ok", accessToken: newAccessToken });
   } catch (err) {
     console.error(err);
