@@ -8,8 +8,8 @@ const Header: React.FC = () => {
   return (
     <header className='header'>
       <div className='container'>
-        <h1 className='logo'>Chat App</h1>
-        <h2 className='Profile'>Welcome {name}</h2>
+        <h1 className='logo'>Takem</h1>
+        <h2 className='Profile'>Welcome {name ? name : "to the Chat App"}</h2>
         <nav>
           <ul className='nav-links'>
             {token ? (
@@ -17,9 +17,14 @@ const Header: React.FC = () => {
                 <a href='/logout'>Logout</a>
               </li>
             ) : (
-              <li>
-                <a href='/login'>Login</a>
-              </li>
+              <>
+                <li>
+                  <a href='/login'>Login</a>
+                </li>
+                <li>
+                  <a href='/register'>Register</a>
+                </li>
+              </>
             )}
           </ul>
         </nav>

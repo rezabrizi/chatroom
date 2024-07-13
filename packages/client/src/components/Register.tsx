@@ -22,6 +22,15 @@ const Register: React.FC = () => {
     });
 
     const data = await response.json();
+    if (data.status === "error") {
+      alert("Email exists: please log in.");
+    } else if (data.status === "ok") {
+      alert(`Registeration successful ${email}`);
+    }
+
+    setName("");
+    setEmail("");
+    setPassword("");
   }
 
   return (

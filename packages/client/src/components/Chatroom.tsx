@@ -20,7 +20,6 @@ const Chat: React.FC = () => {
     setSocket(newSocket);
 
     newSocket.on("message", (data: { user: string; message: string }) => {
-      console.log(data.message);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
 

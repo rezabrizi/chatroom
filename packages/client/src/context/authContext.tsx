@@ -95,14 +95,12 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (name === null && token !== null) {
-      console.log("Refreshing name");
       get_profile();
     }
   }, [token]);
 
   useEffect(() => {
     if (token === null) {
-      console.log("refreshing token");
       refreshAccessToken();
     } else {
       setLoading(false);

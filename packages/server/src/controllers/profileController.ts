@@ -4,7 +4,7 @@ import User from "../models/user.models";
 async function profile(req: Request, res: Response) {
   try {
     const { email } = req.query;
-    console.log(email);
+    console.log(`Profile controller ${email}`);
     if (!email) {
       return res.status(400).json({
         status: "error",

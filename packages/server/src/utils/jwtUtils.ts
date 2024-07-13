@@ -11,7 +11,6 @@ interface TokenType {
 
 export const generateRandomToken = (type: TokenType, name: string): string => {
   const payload = { name };
-  console.log(payload);
   if (type.type === "access")
     return jwt.sign(payload, ACCESS_SECRET, { expiresIn: "1m" });
   else return jwt.sign(payload, REFRESH_TOKEN, { expiresIn: "7d" });

@@ -11,10 +11,30 @@ interface Message {
 }
 
 const Protected_Example: React.FC = () => {
-  const { token } = useAuth();
+  const { token, name } = useAuth();
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [socket, setSocket] = useState<Socket | null>(null);
+
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:1337/api/chat/history"
+        );
+        const fetchedMessages: Message[] = response.data.map((msg: any) => ({
+          sender: msg.sender,
+          text: msg.text,
+          timeStamp: new Date(msg.timeStamp),
+        }));
+        setMessages(fetchedMessages);
+      } catch (err) {
+        console.error("Error fetching chat history: ", err);
+      }
+    };
+    fetchChatHistory();
+  }, []);
+
   useEffect(() => {
     if (token) {
       const socketConnection = io("http://localhost:1337", {
@@ -24,7 +44,6 @@ const Protected_Example: React.FC = () => {
       setSocket(socketConnection);
 
       socketConnection.on("message", (data) => {
-        console.log(data);
         setMessages((prevMessages) => [...prevMessages, data]);
       });
 
@@ -42,10 +61,6 @@ const Protected_Example: React.FC = () => {
   const sendMessage = () => {
     if (socket && message.trim() !== "") {
       socket.emit("message", { text: message });
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: message, sender: "currentUser", timeStamp: new Date() },
-      ]);
       setMessage("");
     }
   };
@@ -56,9 +71,7 @@ const Protected_Example: React.FC = () => {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={
-              msg.sender === "currentUser" ? "self-message" : "message"
-            }
+            className={msg.sender === name ? "self-message" : "message"}
           >
             <strong>{msg.sender}</strong> {msg.text}
           </div>

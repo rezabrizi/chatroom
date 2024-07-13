@@ -27,7 +27,6 @@ setInterval(removeExpiredRefreshTokens, 86400000);
 export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
-    console.log(name);
     if (!name || !email || !password) {
       return res.status(400).json({
         status: "error",

@@ -23,7 +23,6 @@ io.use((socket: CustomSocket, next) => {
     next(new Error("Auth error"));
   }
   const decoded = verifyToken(token, { type: "access" });
-  console.log(decoded);
   if (decoded === null) {
     return next(new Error("Auth error"));
   }
