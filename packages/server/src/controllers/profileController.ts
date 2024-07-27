@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import User from "../models/user.models";
 
+// async function to pro
 async function profile(req: Request, res: Response) {
   try {
     const { email } = req.query;
-    console.log(`Profile controller ${email}`);
     if (!email) {
       return res.status(400).json({
         status: "error",

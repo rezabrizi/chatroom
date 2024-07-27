@@ -13,7 +13,6 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [socket, setSocket] = useState<any>(null);
 
-  const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
     const newSocket = io("http://localhost:1337", { query: { token } });

@@ -4,7 +4,7 @@ import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Register from "./components/Register";
 import AuthProvider from "./context/authContext";
-import Protected_Example from "./components/protected_example";
+import Protected_Example from "./components/SampleProtected";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import Header from "./components/ProfileHeader";
